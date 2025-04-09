@@ -107,15 +107,15 @@ async def redirect_and_log(code: str, request: Request):
     user_agent = request.headers.get("user-agent", "desconocido")
     fecha = datetime.utcnow().isoformat()
 
-    # Obtener ubicación usando ip-api.com
+    # Obtener ubicación usando ip-api.com (temporalmente deshabilitado)
     location = {}
-    try:
-        async with httpx.AsyncClient() as client:
-            resp = await client.get(f"http://ip-api.com/json/{ip}")
-            if resp.status_code == 200:
-                location = resp.json()
-    except:
-        location = {}
+    # try:
+    #     async with httpx.AsyncClient() as client:
+    #         resp = await client.get(f"http://ip-api.com/json/{ip}")
+    #         if resp.status_code == 200:
+    #             location = resp.json()
+    # except:
+    #     location = {}
 
     # Guardar visita en Supabase
     supabase.table("visits").insert({
