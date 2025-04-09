@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<title>Acortador de URLs</title>
+<style>
+body { font-family: Arial, sans-serif; margin: 2em; }
+input[type="url"] { width: 300px; padding: 0.5em; }
+button { padding: 0.5em 1em; }
+#result { margin-top: 1em; font-weight: bold; }
+</style>
+</head>
+<body>
+<h1>Acortador de URLs</h1>
+<form id="shorten-form">
+  <input type="url" id="url-input" placeholder="Ingresa la URL" required />
+  <button type="submit">Acortar</button>
+</form>
+<div id="result"></div>
+
+<script>
+document.getElementById('shorten-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const url = document.getElementById('url-input').value;
+  const response = await fetch('/shorten', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({url})
+  });
+  if (response.ok) {
+    const data = await response.json();
+    document.getElementById('result').innerHTML = 
+      `URL acortada: <a href="${data.short_url}" target="_blank">${data.short_url}</a>`;
+  } else {
+    document.getElementById('result').textContent = 'Error al acortar la URL';
+  }
+});
+</script>
+</body>
+</html>
